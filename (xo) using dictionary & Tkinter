@@ -7,17 +7,11 @@ class Application(tk.Frame):
 		super().__init__(master=master)
 		self.master = master
 		self.grid()
-
 		self.board = ['#'] + [' ' for i in range(9)]
 		self.x_score = 0
 		self.o_score = 0
-
 		self.players = ['X', 'O']
 		self.current_player = random.randint(0,1)
-
-
-
-
 
 
 		self.line_dict = {'123':[50,50,250,50], '456':[50,150,250,150], '789':[50,250,250,250],
@@ -25,31 +19,24 @@ class Application(tk.Frame):
 						  '159':[50,50,250,250],'357':[250,50,50,250]}
 
 
-
-
 		self.draw_header_frame()
 		self.draw_body_frame()
 	def draw_header_frame(self):
+
 		self.header = tk.Frame(self, width=300, height=100)
 		self.header.grid(row=0, column=0)
 		self.header.grid_propagate(False)
-
 		self.score_frame = tk.Frame(self.header, width=300, height=50)
 		self.score_frame.grid(row=0, column=0)
 		self.score_frame.grid_propagate(False)
-
 		self.player_frame = tk.Frame(self.header, width=300, height=50)
 		self.player_frame.grid(row=1, column=0)
 		self.player_frame.grid_propagate(False)
-
 		self.x_label = tk.Label(self.score_frame, text=f'X   {self.x_score}', fg='black',
 						 font=('Papyrus', 20, 'bold'))
 		self.x_label.grid(row=0, column=0, padx=20, pady=5)
-
-		self.o_label = tk.Label(self.score_frame, text=f'O   {self.o_score}', fg='black',
-						 font=('Papyrus', 20, 'bold'))
+		self.o_label = tk.Label(self.score_frame, text=f'O   {self.o_score}', fg='black',						 font=('Papyrus', 20, 'bold'))
 		self.o_label.grid(row=0, column=3, padx=110, pady=5)
-
 		current = self.players[self.current_player]
 		self.player_label = tk.Label(self.player_frame, text=f'Current Player : {current}', fg='green',
 						 font=('verdana', 12, 'bold'))
@@ -59,15 +46,12 @@ class Application(tk.Frame):
 		self.body = tk.Frame(self, width=300, height=300)
 		self.body.grid(row=1, column=0)
 		self.body.grid_propagate(False)
-
 		self.canvas = tk.Canvas(self.body, width=300, height=300, bg='white')
 		self.canvas.grid()
-
 		self.canvas.create_line([100, 10, 100, 290], width=4, fill='black')
 		self.canvas.create_line([200, 10, 200, 290], width=4, fill='black')
 		self.canvas.create_line([10, 100, 290, 100], width=4, fill='black')
 		self.canvas.create_line([10, 200, 290, 200], width=4, fill='black')
-
 		self.canvas.bind('<Button-1>', self.draw_text)
 
 	def draw_text(self, event):
@@ -76,7 +60,6 @@ class Application(tk.Frame):
 		if self.check_space(cell):
 			self.board[cell] = self.players[self.current_player]
 			self.write_text(pos, text = self.players[self.current_player])
-
 			if self.check_winner('X'):
 				self.x_score += 1
 				self.x_label['text'] = f'X   {self.x_score}'
@@ -92,10 +75,8 @@ class Application(tk.Frame):
 				self.current_player = (self.current_player + 1) % 2
 				self.player_label['text'] = f'Current Player : {self.players[self.current_player]}'
 
-
 	def write_text(self, pos, text):
 		self.canvas.create_text(pos,  text=text, font='bold', fill="black")
-
 	def check_space(self, pos):
 		return self.board[pos] == ' '
 
@@ -132,7 +113,6 @@ class Application(tk.Frame):
 			value = (True, '357')
 		else:
 			value = (False, -1)
-
 		return value
 
 	def get_text_pos(self, pos):
@@ -166,13 +146,10 @@ class Application(tk.Frame):
 
 	def restart_game(self):
 		self.top.destroy()
-
 		self.canvas.delete('all')
 		self.body.destroy()
-
 		self.board = ['#'] + [' ' for i in range(9)]
 		self.draw_body_frame()
-
 		self.current_player = random.randint(0,1)
 		self.player_label['text'] = f'Current Player : {self.players[self.current_player]}'
 
@@ -183,13 +160,10 @@ class Application(tk.Frame):
 		self.top.title('X O GAME')
 		self.top.resizable(0,0)
 		self.top.protocol("WM_DELETE_WINDOW", self.master.destroy)
-
 		tk.Label(self.top, text=msg, fg='black', font=('verdana', 12, 'bold')
 				).grid(row=0, column=0, padx=40, pady=5, columnspan=3)
-
 		ttk.Button(self.top, text='Play Again', command=self.restart_game,
 				width=10).grid(row=1, column=0, columnspan=2, pady=20, padx=20)
-
 		ttk.Button(self.top, text='Exit', command=self.master.destroy,
 				width=8).grid(row=1, column=2, pady=20, padx=10)
 
@@ -198,6 +172,5 @@ if __name__ == '__main__':
 	root.title('X O GAME')
 	root.resizable(0,0)
 	root.geometry('300x400+450+200')
-
 	app = Application(master=root)
 	app.mainloop()
